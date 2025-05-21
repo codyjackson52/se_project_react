@@ -1,5 +1,3 @@
-// src/components/Main/Main.jsx
-
 import "./Main.css";
 import WeatherCard from "../WeatherCard/WeatherCard";
 import ItemCard from "../ItemCard/ItemCard";
