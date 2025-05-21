@@ -1,0 +1,50 @@
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal__preview {
+  background-color: #ffffff;
+  border-radius: 20px;
+  max-width: 498px;
+  padding: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.modal__image-preview {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.modal__caption {
+  font-family: "Cabinet Grotesk", sans-serif;
+  font-size: 16px;
+  line-height: 20px;
+  padding: 12px 20px;
+  color: #000;
+}
+
+.modal__close {
+  background-image: url("/close.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 16px;
+  height: 16px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
