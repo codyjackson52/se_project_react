@@ -1,7 +1,7 @@
 import "./ItemModal.css";
 
-function ItemModal({ selectedCard, onClose }) {
-  if (!selectedCard) return null;
+function ItemModal({ selectedCard, onClose, isOpen }) {
+  if (!isOpen || !selectedCard) return null;
 
   return (
     <div className="modal-item modal_opened" onClick={onClose}>

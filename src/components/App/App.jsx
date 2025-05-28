@@ -133,9 +133,11 @@ function App() {
           </fieldset>
         </ModalWithForm>
 
-        {activeModal === "preview" && (
-          <ItemModal selectedCard={selectedCard} onClose={closeActiveModal} />
-        )}
+        <ItemModal
+          isOpen={activeModal === "preview"}
+          selectedCard={selectedCard}
+          onClose={closeActiveModal}
+        />
 
         <Footer />
       </div>
