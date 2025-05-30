@@ -9,13 +9,17 @@ export const getWeatherData = () => {
       return res.json();
     })
     .then((data) => {
-      const temperature = data.main.temp;
+      const tempF = data.main.temp;
+      const tempC = Math.round(((tempF - 32) * 5) / 9);
       const city = data.name;
 
       return {
-        temperature,
+        temperature: {
+          F: tempF,
+          C: tempC,
+        },
         city,
-        type: getWeatherType(temperature),
+        type: getWeatherType(tempF),
       };
     });
 };

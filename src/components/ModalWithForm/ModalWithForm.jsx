@@ -6,7 +6,7 @@ function ModalWithForm({
   title,
   handleCloseClick,
   isOpen,
-  onSubmit, // ✅ new prop
+  onSubmit,
 }) {
   return (
     <div className={`modal-with-form ${isOpen ? "modal_opened" : ""}`}>

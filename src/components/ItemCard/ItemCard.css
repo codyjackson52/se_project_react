@@ -1,27 +1,11 @@
 .card {
-  position: relative; /* Allow absolute positioning inside */
-  background-color: #ffffff;
-  width: 328px;
+  position: relative;
+  width: 325px;
   height: 328px;
-  border-radius: 8px;
+  background-color: #f5f5f5;
   border: 1px solid rgba(0, 0, 0, 0.3);
+  border-radius: 12px;
   overflow: hidden;
-}
-
-.card__name {
-  position: absolute;
-  top: 12px;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: #ffffff;
-  padding: 4px 12px;
-  border-radius: 4px;
-  font-family: "Cabinet Grotesk", sans-serif;
-  font-weight: 700;
-  font-size: 16px;
-  line-height: 20px;
-  color: rgba(0, 0, 0, 0.6);
-  z-index: 2;
 }
 
 .card__image {
@@ -29,4 +13,19 @@
   height: 100%;
   object-fit: cover;
   display: block;
+}
+
+.card__name {
+  position: absolute;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: "Cabinet Grotesk", sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  background-color: #ffffff;
+  color: #000;
+  padding: 4px 8px;
+  border-radius: 8px;
+  margin: 0;
 }
