@@ -1,13 +1,11 @@
 import { latitude, longitude, APIkey } from "./constants";
+import { checkResponse } from "./api";
 
 const weatherApiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=imperial&appid=${APIkey}`;
 
 export const getWeatherData = () => {
   return fetch(weatherApiUrl)
-    .then((res) => {
-      if (!res.ok) throw new Error(`Weather API error: ${res.status}`);
-      return res.json();
-    })
+    .then(checkResponse)
     .then((data) => {
       const tempF = data.main.temp;
       const tempC = Math.round(((tempF - 32) * 5) / 9);

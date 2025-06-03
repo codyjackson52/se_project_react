@@ -5,7 +5,7 @@ import "./App.css";
 import Header from "../Header/Header";
 import Main from "../Main/Main";
 import Footer from "../Footer/Footer";
-import ModalWithForm from "../ModalWithForm/ModalWithForm";
+import AddItemModal from "../AddItemModal/AddItemModal";
 import ItemModal from "../ItemModal/ItemModal";
 import Profile from "../Profile/Profile";
 import DeleteConfirmation from "../DeleteConfirmation/DeleteConfirmation";
@@ -54,14 +54,19 @@ function App() {
   }, []);
 
   useEffect(() => {
+    if (!activeModal) return;
+
     const handleEscClose = (e) => {
       if (e.key === "Escape") {
         closeActiveModal();
       }
     };
+
     document.addEventListener("keydown", handleEscClose);
-    return () => document.removeEventListener("keydown", handleEscClose);
-  }, []);
+    return () => {
+      document.removeEventListener("keydown", handleEscClose);
+    };
+  }, [activeModal]);
 
   const handleAddClick = () => {
     setActiveModal("add-garment");
@@ -158,65 +163,17 @@ function App() {
               />
             </Routes>
 
-            <ModalWithForm
+            <AddItemModal
               isOpen={activeModal === "add-garment"}
-              title="New garment"
-              buttonText="Add garment"
-              handleCloseClick={closeActiveModal}
-              onSubmit={handleAddGarmentSubmit}
-            >
-              <label htmlFor="name" className="modal__label">
-                Name
-                <input
-                  type="text"
-                  className="modal__input"
-                  id="name"
-                  placeholder="Name"
-                  value={newGarmentName}
-                  onChange={(e) => setNewGarmentName(e.target.value)}
-                  required
-                />
-              </label>
-
-              <label htmlFor="imageUrl" className="modal__label">
-                Image
-                <input
-                  type="text"
-                  className="modal__input"
-                  id="imageUrl"
-                  placeholder="Image URL"
-                  value={newGarmentImage}
-                  onChange={(e) => setNewGarmentImage(e.target.value)}
-                  required
-                />
-              </label>
-
-              <fieldset className="modal__radio-buttons">
-                <legend className="modal__legend">
-                  Select the weather type:
-                </legend>
-
-                {["hot", "warm", "cold"].map((type) => (
-                  <label
-                    key={type}
-                    htmlFor={type}
-                    className="modal__label modal__label_type_radio"
-                  >
-                    <input
-                      type="radio"
-                      id={type}
-                      name="weather"
-                      value={type}
-                      className="modal__radio-input"
-                      checked={newGarmentWeather === type}
-                      onChange={(e) => setNewGarmentWeather(e.target.value)}
-                      required
-                    />
-                    <span>{type[0].toUpperCase() + type.slice(1)}</span>
-                  </label>
-                ))}
-              </fieldset>
-            </ModalWithForm>
+              onClose={closeActiveModal}
+              onAddItem={handleAddGarmentSubmit}
+              garmentName={newGarmentName}
+              setGarmentName={setNewGarmentName}
+              garmentImage={newGarmentImage}
+              setGarmentImage={setNewGarmentImage}
+              garmentWeather={newGarmentWeather}
+              setGarmentWeather={setNewGarmentWeather}
+            />
 
             <ItemModal
               isOpen={activeModal === "preview"}
