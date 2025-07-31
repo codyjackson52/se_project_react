@@ -1,0 +1,8 @@
+.clothes-section__items {
+  display: grid;
+  grid-template-columns: repeat(3, 325px);
+  gap: 20px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
