@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../ModalWithForm/ModalWithForm.css"; // Reuse modal styles
+import "../ModalWithForm/ModalWithForm.css";
 
 const RegisterModal = ({ isOpen, onClose, onRegister }) => {
   const [name, setName] = useState("");
