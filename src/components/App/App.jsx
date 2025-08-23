@@ -12,7 +12,7 @@ import DeleteConfirmation from "../DeleteConfirmation/DeleteConfirmation";
 import RegisterModal from "../RegisterModal/RegisterModal";
 import LoginModal from "../LoginModal/LoginModal";
 import EditProfileModal from "../EditProfileModal/EditProfileModal";
-import RequireAuth from "../RequireAuth/RequireAuth";
+import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 
 import { getWeatherData } from "../../utils/weatherApi";
 import {
@@ -208,7 +208,7 @@ function App() {
     localStorage.removeItem("jwt");
     setIsLoggedIn(false);
     setCurrentUser(null);
-    navigate("/"); // ✅ redirect after logout
+    navigate("/");
   };
 
   return (
@@ -241,7 +241,7 @@ function App() {
               <Route
                 path="/profile"
                 element={
-                  <RequireAuth isLoggedIn={isLoggedIn}>
+                  <ProtectedRoute isLoggedIn={isLoggedIn}>
                     <>
                       <Header
                         handleAddClick={handleAddClick}
@@ -257,7 +257,7 @@ function App() {
                         onSignOut={handleSignOut}
                       />
                     </>
-                  </RequireAuth>
+                  </ProtectedRoute>
                 }
               />
             </Routes>

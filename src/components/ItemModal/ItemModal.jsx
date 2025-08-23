@@ -1,44 +1,40 @@
-import { useContext } from "react";
+import React, { useContext } from "react";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import "./ItemModal.css";
 
-function ItemModal({ selectedCard, isOpen, onClose, onDeleteClick }) {
+function ItemModal({ selectedCard, onClose, onDeleteClick, isOpen }) {
   const currentUser = useContext(CurrentUserContext);
 
-  // ⛔ If modal isn’t open or no card selected, return null
   if (!isOpen || !selectedCard) return null;
 
-  // ✅ Ownership check — only show delete button if current user owns item
-  const isOwn = selectedCard.owner === currentUser?._id;
-
-  // ✅ Conditional class to hide button if not owner
-  const itemDeleteButtonClassName = `modal__delete-button ${
-    isOwn ? "" : "modal__delete-button_hidden"
-  }`;
+  // ✅ Only show delete if the current user owns the card
+  const isOwner = selectedCard.owner === currentUser?._id;
 
   return (
-    <div className="modal-item" onClick={onClose}>
-      <div className="modal__preview" onClick={(e) => e.stopPropagation()}>
-        <button className="modal__close" onClick={onClose}></button>
+    <div className="modal modal_type_preview" onClick={onClose}>
+      <div
+        className="modal__content modal__content_type_preview"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <button className="modal__close" onClick={onClose} />
 
         <img
-          src={selectedCard.link}
+          className="modal__image"
+          src={selectedCard.imageUrl}
           alt={selectedCard.name}
-          className="modal__image-preview"
         />
+        <div className="modal__caption">
+          <p className="modal__item-name">{selectedCard.name}</p>
 
-        <div className="modal__info-bar">
-          <div className="modal__text-group">
-            <p className="modal__caption">{selectedCard.name}</p>
-            <p className="modal__weather">Weather: {selectedCard.weather}</p>
-          </div>
-
-          <button
-            className={itemDeleteButtonClassName}
-            onClick={() => onDeleteClick(selectedCard)}
-          >
-            Delete item
-          </button>
+          {isOwner && (
+            <button
+              className="modal__delete"
+              type="button"
+              onClick={onDeleteClick}
+            >
+              Delete
+            </button>
+          )}
         </div>
       </div>
     </div>

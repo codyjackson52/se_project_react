@@ -22,6 +22,7 @@ function Profile({
         <ClothesSection
           clothingItems={clothingItems}
           onCardClick={onCardClick}
+          onAddClick={onAddClick}
         />
       </div>
     </div>

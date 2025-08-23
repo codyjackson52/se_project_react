@@ -1,23 +1,26 @@
 import React, { useState } from "react";
 import "../ModalWithForm/ModalWithForm.css";
 
-const RegisterModal = ({ isOpen, onClose, onRegister }) => {
-  const [name, setName] = useState("");
-  const [avatar, setAvatar] = useState("");
+function RegisterModal({ isOpen, onClose, onRegister }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [avatar, setAvatar] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
     onRegister({ name, avatar, email, password });
   };
 
+  if (!isOpen) return null;
+
   return (
-    <div className={`modal ${isOpen ? "modal_opened" : ""}`}>
-      <div className="modal__content">
+    <div className="modal" onClick={onClose}>
+      <div className="modal__content" onClick={(e) => e.stopPropagation()}>
         <button className="modal__close" onClick={onClose} />
+
         <form className="modal__form" onSubmit={handleSubmit}>
-          <h3 className="modal__title">Sign up</h3>
+          <h2 className="modal__title">Sign Up</h2>
 
           <label className="modal__label">
             Name
@@ -64,12 +67,12 @@ const RegisterModal = ({ isOpen, onClose, onRegister }) => {
           </label>
 
           <button type="submit" className="modal__submit">
-            Sign up
+            Sign Up
           </button>
         </form>
       </div>
     </div>
   );
-};
+}
 
 export default RegisterModal;

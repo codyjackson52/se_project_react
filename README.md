@@ -1,24 +1,62 @@
 # WTWR (What To Wear)
 
-WTWR is a weather-based clothing recommendation app built using **React** and the **OpenWeather API**. It lets users view weather data and see suggested clothing items filtered by temperature. Users can also add new clothing items through a modal form.
+WTWR is a full-stack weather-based clothing recommendation app built using **React (Vite)** on the frontend and **Express/MongoDB** on the backend.
+
+Users can register, log in, view live weather, and get clothing recommendations. Logged-in users can add, like, and delete items, as well as edit their profile.
+
+---
 
 ## 🌤 Features
 
-- ✅ Live temperature pulled from OpenWeather API (New Smyrna Beach)
-- ✅ Weather-specific clothing card filtering (`hot`, `warm`, `cold`)
-- ✅ Modal preview of each clothing item with image and name
-- ✅ Add new garments via styled modal with radio inputs
-- ✅ Keyboard + click-to-close modal functionality
-- ✅ Clean and responsive UI (Figma-matched)
+- Live temperature pulled from the OpenWeather API (New Smyrna Beach, FL)
+- Weather-specific clothing card filtering (`hot`, `warm`, `cold`)
+- Modal preview of each clothing item with image and name
+- Add new garments via styled modal with radio inputs
+- Register and log in with JWT authentication
+- Edit profile details (name + avatar)
+- Like/unlike clothing items (protected routes)
+- Delete owned items (protected routes)
+- Keyboard + click-to-close modal functionality
+- Clean and responsive UI (Figma-matched)
+
+---
 
 ## 🛠 Technologies
 
-- [React](https://react.dev/)
-- [Vite](https://vitejs.dev/)
-- OpenWeather API
+**Frontend**
+
+- React + Vite
+- React Router
+- Context API
 - HTML / CSS (Cabinet Grotesk font)
 - JavaScript (ES6+)
+
+**Backend**
+
+- Node.js / Express
+- MongoDB / Mongoose
+- JWT Authentication
+- REST API
+
+**Other**
+
+- OpenWeather API
 - Git & GitHub
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
+
+## 🔗 Repositories
+
+- **Frontend (this repo):** [se_project_react](https://github.com/codyjackson52/se_project_react)
+- **Backend:** [se_project_express](https://github.com/codyjackson52/se_project_express)
+
+---
+
+## 🚀 Setup
+
+### 1. Clone repositories
+
+```bash
+git clone https://github.com/codyjackson52/se_project_react.git
+git clone https://github.com/codyjackson52/se_project_express.git
+```
