@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../ModalWithForm/ModalWithForm.css";
+import "./RegisterModal.css"; // ✅ fixed import
 
 function RegisterModal({ isOpen, onClose, onRegister }) {
   const [email, setEmail] = useState("");
