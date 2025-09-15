@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import "./ItemModal.css";
 
@@ -7,32 +7,44 @@ function ItemModal({ selectedCard, onClose, onDeleteClick, isOpen }) {
 
   if (!isOpen || !selectedCard) return null;
 
-  // ✅ Only show delete if the current user owns the card
   const isOwner = selectedCard.owner === currentUser?._id;
 
-  return (
-    <div className="modal modal_type_preview" onClick={onClose}>
-      <div
-        className="modal__content modal__content_type_preview"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <button className="modal__close" onClick={onClose} />
+  const handleBackdropClick = (e) => {
+    if (e.target.classList.contains("modal")) onClose();
+  };
 
+  return (
+    <div className="modal modal_opened" onMouseDown={handleBackdropClick}>
+      <div className="modal-item" onMouseDown={(e) => e.stopPropagation()}>
+        <button
+          className="modal__close"
+          type="button"
+          aria-label="Close"
+          onClick={onClose}
+        />
+
+        {/* Image fills the top */}
         <img
           className="modal__image"
           src={selectedCard.imageUrl}
           alt={selectedCard.name}
         />
-        <div className="modal__caption">
-          <p className="modal__item-name">{selectedCard.name}</p>
 
+        {/* Caption bar (bottom) */}
+        <div className="modal__caption">
+          <div className="modal__text">
+            <h3 className="modal__title">{selectedCard.name}</h3>
+            <span className="modal__weather">
+              Weather: {selectedCard.weather}
+            </span>
+          </div>
           {isOwner && (
             <button
               className="modal__delete"
               type="button"
               onClick={onDeleteClick}
             >
-              Delete
+              Delete item
             </button>
           )}
         </div>

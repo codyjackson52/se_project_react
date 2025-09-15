@@ -13,26 +13,27 @@ function ItemCard({ item, onCardClick, onCardLike }) {
     isLiked ? "card__like-button_liked" : ""
   }`;
 
-  // Handle clicking the like button
-  const handleLike = () => {
-    onCardLike(item); // Pass the item back up to App
+  // Handle clicking the like button (without triggering modal)
+  const handleLike = (e) => {
+    e.stopPropagation(); // ✅ prevent modal from opening when liking
+    onCardLike(item);
   };
 
   return (
-    <li className="card">
-      <p className="card__name">{item.name}</p>
-      <img
-        src={item.imageUrl}
-        alt={item.name}
-        className="card__image"
-        onClick={() => onCardClick(item)}
-      />
-      {/* Show like button only if user is logged in */}
+    <li className="card" onClick={() => onCardClick(item)}>
+      {/* Item image */}
+      <img src={item.imageUrl} alt={item.name} className="card__image" />
+
+      {/* Item title below image */}
+      <h3 className="card__title">{item.name}</h3>
+
+      {/* Like button (overlay top-right) */}
       {currentUser && (
         <button
           className={itemLikeButtonClassName}
           onClick={handleLike}
           type="button"
+          aria-label={isLiked ? "Unlike item" : "Like item"}
         />
       )}
     </li>

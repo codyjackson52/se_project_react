@@ -7,8 +7,8 @@ function SideBar({ onEditProfile, onSignOut }) {
   const currentUser = useContext(CurrentUserContext);
 
   return (
-    <div className="sidebar">
-      <div className="sidebar__top">
+    <aside className="sidebar">
+      <div className="sidebar__user">
         <img
           src={currentUser?.avatar || avatar}
           alt="User avatar"
@@ -16,13 +16,14 @@ function SideBar({ onEditProfile, onSignOut }) {
         />
         <p className="sidebar__username">{currentUser?.name || "Username"}</p>
       </div>
-      <button className="sidebar__edit-button" onClick={onEditProfile}>
-        Edit Profile
+
+      <button className="sidebar__link" onClick={onEditProfile}>
+        Change profile data
       </button>
-      <button className="sidebar__signout-button" onClick={onSignOut}>
-        Sign out
+      <button className="sidebar__link" onClick={onSignOut}>
+        Log out
       </button>
-    </div>
+    </aside>
   );
 }
 

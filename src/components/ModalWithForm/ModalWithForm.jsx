@@ -8,9 +8,17 @@ function ModalWithForm({
   isOpen,
   onSubmit,
 }) {
+  if (!isOpen) return null; // ✅ only render when open
+
   return (
-    <div className={`modal-with-form ${isOpen ? "modal_opened" : ""}`}>
-      <div className="modal__content">
+    <div
+      className="modal-with-form modal_opened" // ✅ class naming
+      onClick={handleCloseClick} // ✅ close on overlay click
+    >
+      <div
+        className="modal__content"
+        onClick={(e) => e.stopPropagation()} // ✅ prevent closing when clicking inside
+      >
         <h2 className="modal__title">{title}</h2>
         <button
           type="button"

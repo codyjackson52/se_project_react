@@ -1,7 +1,7 @@
 const baseUrl = "http://localhost:3001";
 
-// Utility to handle fetch responses
-const checkResponse = (res) => {
+// Handle fetch responses
+export const checkResponse = (res) => {
   if (!res.ok) {
     return res.json().then((err) => {
       throw new Error(err.message || `Fetch error: ${res.status}`);
@@ -10,10 +10,10 @@ const checkResponse = (res) => {
   return res.json();
 };
 
-// Utility to get the stored JWT
+// Get stored JWT
 const getToken = () => localStorage.getItem("jwt");
 
-// Utility to DRY up headers
+// Common headers
 const getAuthHeaders = (isJson = true) => {
   const headers = {
     Authorization: `Bearer ${getToken()}`,
@@ -33,7 +33,7 @@ export const getClothingItems = () =>
     .then((items) =>
       items.map((item) => ({
         ...item,
-        link: item.imageUrl,
+        imageUrl: item.imageUrl, // ✅ consistent with backend
         id: item._id ?? item.id,
       }))
     );

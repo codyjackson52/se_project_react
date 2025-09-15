@@ -1,15 +1,41 @@
 .sidebar {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  padding-left: 40px;
-  padding-right: 20px;
-  min-width: 229px;
+  gap: 16px; /* space between user and links */
+  padding: 20px 20px 0 40px; /* left/right padding like your original */
+  min-width: 229px; /* keep your width */
 }
 
-.sidebar__top {
+.sidebar__user {
   display: flex;
   align-items: center;
   gap: 12px;
-  height: 56px;
+  height: 56px; /* matches your old .sidebar__top */
+}
+
+.sidebar__avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.sidebar__username {
+  font-weight: 600;
+  margin: 0;
+}
+
+.sidebar__link {
+  background: none;
+  border: none;
+  font-size: 14px;
+  font-weight: 500;
+  color: #000;
+  text-align: left;
+  cursor: pointer;
+  padding: 0;
+}
+
+.sidebar__link:hover {
+  text-decoration: underline;
 }

@@ -49,25 +49,21 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
 
+  // fetch weather on mount
   useEffect(() => {
     getWeatherData()
-      .then(setWeatherData)
+      .then((data) => setWeatherData(data))
       .catch((err) => console.error("Weather fetch failed:", err));
   }, []);
 
+  // fetch clothing items on mount
   useEffect(() => {
     getClothingItems()
-      .then((items) =>
-        setClothingItems(
-          items.map((item) => ({
-            ...item,
-            link: item.imageUrl,
-          }))
-        )
-      )
+      .then((items) => setClothingItems(items))
       .catch((err) => console.error("Fetch failed", err));
   }, []);
 
+  // close modal on Escape
   useEffect(() => {
     if (!activeModal) return;
     const handleEscClose = (e) => {
@@ -77,6 +73,7 @@ function App() {
     return () => document.removeEventListener("keydown", handleEscClose);
   }, [activeModal]);
 
+  // check for existing token
   useEffect(() => {
     const token = localStorage.getItem("jwt");
     if (!token) return;
@@ -86,18 +83,19 @@ function App() {
         setCurrentUser(user);
         setIsLoggedIn(true);
       })
-      .catch((err) => {
-        console.error("Token check failed:", err);
+      .catch(() => {
         localStorage.removeItem("jwt");
       });
   }, []);
 
+  // toggle F/C
   const handleToggleSwitchChange = () => {
     setCurrentTemperatureUnit((prev) => (prev === "F" ? "C" : "F"));
   };
 
   const closeActiveModal = () => {
     setActiveModal("");
+    setSelectedCard(null); // ✅ clear selectedCard when closing
     setNewGarmentName("");
     setNewGarmentImage("");
     setNewGarmentWeather("");
@@ -163,16 +161,13 @@ function App() {
     };
     addClothingItem(newItem)
       .then((addedItem) => {
-        const normalizedItem = { ...addedItem, link: addedItem.imageUrl };
-        setClothingItems([normalizedItem, ...clothingItems]);
+        setClothingItems([addedItem, ...clothingItems]);
         closeActiveModal();
       })
       .catch((err) => console.error("Add failed", err));
   };
 
-  const handleDeleteClick = () => {
-    setActiveModal("delete-confirmation");
-  };
+  const handleDeleteClick = () => setActiveModal("delete-confirmation");
 
   const handleDeleteConfirm = () => {
     if (!selectedCard) return;
@@ -181,7 +176,6 @@ function App() {
         setClothingItems((items) =>
           items.filter((item) => item._id !== selectedCard._id)
         );
-        setSelectedCard(null);
         closeActiveModal();
       })
       .catch((err) => console.error("Delete failed", err));
@@ -189,11 +183,7 @@ function App() {
 
   const handleCardLike = ({ _id, likes }) => {
     const isLiked = likes.some((id) => id === currentUser?._id);
-    const token = localStorage.getItem("jwt");
-
-    const likeRequest = !isLiked
-      ? addCardLike(_id, token)
-      : removeCardLike(_id, token);
+    const likeRequest = !isLiked ? addCardLike(_id) : removeCardLike(_id);
 
     likeRequest
       .then((updatedCard) => {
@@ -255,6 +245,7 @@ function App() {
                         onAddClick={handleAddClick}
                         onEditProfile={() => setActiveModal("edit-profile")}
                         onSignOut={handleSignOut}
+                        onCardLike={handleCardLike} // ✅ pass like handler
                       />
                     </>
                   </ProtectedRoute>
@@ -262,6 +253,7 @@ function App() {
               />
             </Routes>
 
+            {/* Modals */}
             <AddItemModal
               isOpen={activeModal === "add-garment"}
               onClose={closeActiveModal}
@@ -274,12 +266,14 @@ function App() {
               setGarmentWeather={setNewGarmentWeather}
             />
 
-            <ItemModal
-              isOpen={activeModal === "preview"}
-              selectedCard={selectedCard}
-              onClose={closeActiveModal}
-              onDeleteClick={handleDeleteClick}
-            />
+            {selectedCard && (
+              <ItemModal
+                isOpen={activeModal === "preview"}
+                selectedCard={selectedCard}
+                onClose={closeActiveModal}
+                onDeleteClick={handleDeleteClick}
+              />
+            )}
 
             <DeleteConfirmation
               isOpen={activeModal === "delete-confirmation"}
@@ -291,18 +285,20 @@ function App() {
               isOpen={activeModal === "register"}
               onClose={closeActiveModal}
               onRegister={handleRegister}
+              switchToLogin={() => setActiveModal("login")}
             />
 
             <LoginModal
               isOpen={activeModal === "login"}
               onClose={closeActiveModal}
               onLogin={handleLogin}
+              switchToRegister={() => setActiveModal("register")}
             />
 
             <EditProfileModal
               isOpen={activeModal === "edit-profile"}
               onClose={closeActiveModal}
-              onEditProfile={handleProfileEditSubmit}
+              onUpdateUser={handleProfileEditSubmit}
             />
 
             <Footer />
