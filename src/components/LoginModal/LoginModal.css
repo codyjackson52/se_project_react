@@ -1,0 +1,19 @@
+/* client/src/components/RegisterModal/RegisterModal.css */
+
+.modal__form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.modal__label {
+  font-size: 14px;
+  color: #000;
+}
+
+.modal__input {
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}

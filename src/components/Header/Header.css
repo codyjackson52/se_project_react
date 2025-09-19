@@ -1,0 +1,95 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 28px 32px;
+}
+
+.header__left {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.header__logo {
+  height: auto;
+}
+
+.header__date {
+  font-family: "Cabinet Grotesk", sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 24px;
+  color: #000000;
+}
+
+.header__right {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.header__add-clothes-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.header__user-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header__username {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  font-family: "Cabinet Grotesk", sans-serif;
+  font-weight: 700;
+  line-height: 100%;
+  letter-spacing: 0%;
+  color: #000000;
+  text-decoration: none;
+}
+
+.header__user-container {
+  text-decoration: none;
+  color: inherit;
+}
+
+.header__user-container:visited {
+  text-decoration: none;
+  color: inherit;
+}
+
+.header__avatar_placeholder {
+  width: 40px;
+  height: 40px;
+  background-color: #000;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 700;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Cabinet Grotesk", sans-serif;
+}
+
+.header__button {
+  font-family: "Cabinet Grotesk", sans-serif;
+  font-weight: 700; /* Bold */
+  font-size: 20px; /* 20px font size */
+  line-height: 24px; /* Matches Figma */
+  letter-spacing: 0; /* No spacing */
+  background-color: transparent; /* Keep it clean */
+  border: none;
+  cursor: pointer;
+  padding: 6px 18px; /* Gives some click area */
+  border-radius: 4px;
+  transition: background 0.3s ease;
+  color: black;
+}
