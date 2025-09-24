@@ -64,3 +64,31 @@
   text-decoration: none;
   color: inherit;
 }
+
+.header__auth-buttons {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.header__auth-btn {
+  font-family: "Cabinet Grotesk", sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #000000;
+}
+
+.header__auth-btn:hover {
+  opacity: 0.6;
+}
+
+/* Special style for the Register (Sign Up) button */
+.header__auth-btn_type_register {
+  border: 1px solid #000000;
+  border-radius: 20px;
+  padding: 8px 16px;
+}

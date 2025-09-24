@@ -1,0 +1,11 @@
+.edit-profile-modal .modal__title {
+  font-size: 18px;
+}
+
+.edit-profile-modal .modal__submit {
+  background-color: #007bff;
+}
+
+.edit-profile-modal .modal__submit:hover:enabled {
+  background-color: #0056b3;
+}
