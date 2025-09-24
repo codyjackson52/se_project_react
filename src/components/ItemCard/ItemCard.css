@@ -17,7 +17,7 @@
 
 .card__name {
   position: absolute;
-  top: 16px;
+  top: 12px;
   left: 50%;
   transform: translateX(-50%);
   font-family: "Cabinet Grotesk", sans-serif;
@@ -28,4 +28,23 @@
   padding: 4px 8px;
   border-radius: 8px;
   margin: 0;
+  display: inline-block;
+}
+
+/* Like button */
+.card__like-button {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(60px); /* ✅ adjust until it matches Figma */
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.card__like-icon {
+  width: 16px;
+  height: 16px;
+  display: block;
 }
