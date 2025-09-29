@@ -18,6 +18,8 @@ import {
   getClothingItems,
   addClothingItem,
   deleteClothingItem,
+  addCardLike,
+  removeCardLike,
 } from "../../utils/api";
 
 import * as auth from "../../utils/auth";
@@ -43,14 +45,12 @@ function App() {
     setCurrentTemperatureUnit((prev) => (prev === "F" ? "C" : "F"));
   };
 
-  // fetch weather
   useEffect(() => {
     getWeatherData()
       .then((data) => setWeatherData(data))
       .catch((err) => console.error("Weather fetch failed:", err));
   }, []);
 
-  // fetch clothing
   useEffect(() => {
     getClothingItems()
       .then((items) => {
@@ -63,7 +63,6 @@ function App() {
       .catch((err) => console.error("Fetch failed", err));
   }, []);
 
-  // ESC key close
   useEffect(() => {
     if (!activeModal) return;
     const handleEscClose = (e) => {
@@ -75,7 +74,6 @@ function App() {
     return () => document.removeEventListener("keydown", handleEscClose);
   }, [activeModal]);
 
-  // token check
   useEffect(() => {
     const token = localStorage.getItem("jwt");
     if (token) {
@@ -89,11 +87,13 @@ function App() {
     }
   }, []);
 
-  // auth handlers
   const handleRegister = ({ name, avatar, email, password }) => {
     return auth
       .signup({ name, avatar, email, password })
       .then(() => handleLogin({ email, password }))
+      .then(() => {
+        closeActiveModal();
+      })
       .catch((err) => console.error("Register failed:", err));
   };
 
@@ -123,11 +123,13 @@ function App() {
     const token = localStorage.getItem("jwt");
     return auth
       .updateUserProfile({ name, avatar }, token)
-      .then((updatedUser) => setCurrentUser(updatedUser))
+      .then((updatedUser) => {
+        setCurrentUser(updatedUser);
+        closeActiveModal();
+      })
       .catch((err) => console.error("Profile update failed:", err));
   };
 
-  // modal openers
   const handleAddClick = () => setActiveModal("add-garment");
   const handleEditProfileClick = () => setActiveModal("edit-profile");
   const handleLoginClick = () => setActiveModal("login");
@@ -140,7 +142,6 @@ function App() {
     setNewGarmentWeather("");
   };
 
-  // card click handlers
   const handleCardClick = (card) => {
     setSelectedCard(card);
     setActiveModal("preview");
@@ -153,7 +154,8 @@ function App() {
       imageUrl: newGarmentImage,
       weather: newGarmentWeather,
     };
-    addClothingItem(newItem)
+    const token = localStorage.getItem("jwt");
+    addClothingItem(newItem, token)
       .then((addedItem) => {
         const normalizedItem = { ...addedItem, link: addedItem.imageUrl };
         setClothingItems([normalizedItem, ...clothingItems]);
@@ -166,7 +168,8 @@ function App() {
 
   const handleDeleteConfirm = () => {
     if (selectedCard) {
-      deleteClothingItem(selectedCard._id)
+      const token = localStorage.getItem("jwt");
+      deleteClothingItem(selectedCard._id, token)
         .then(() => {
           setClothingItems((items) =>
             items.filter((item) => item._id !== selectedCard._id)
@@ -176,6 +179,24 @@ function App() {
         })
         .catch((err) => console.error("Delete failed", err));
     }
+  };
+
+  const handleCardLike = (card) => {
+    const token = localStorage.getItem("jwt");
+    const isLiked = card.likes.some((id) => id === currentUser?._id);
+    const request = isLiked
+      ? removeCardLike(card._id, token)
+      : addCardLike(card._id, token);
+
+    request
+      .then((updatedCard) => {
+        setClothingItems((items) =>
+          items.map((item) =>
+            item._id === updatedCard._id ? updatedCard : item
+          )
+        );
+      })
+      .catch((err) => console.error("Like toggle failed:", err));
   };
 
   return (
@@ -202,6 +223,8 @@ function App() {
                         weatherData={weatherData}
                         handleCardClick={handleCardClick}
                         clothingItems={clothingItems}
+                        isLoggedIn={isLoggedIn}
+                        onCardLike={handleCardLike}
                       />
                     </>
                   }
@@ -229,7 +252,6 @@ function App() {
                 />
               </Routes>
 
-              {/* Modals */}
               <AddItemModal
                 isOpen={activeModal === "add-garment"}
                 onClose={closeActiveModal}
@@ -259,12 +281,20 @@ function App() {
                 isOpen={activeModal === "register"}
                 onClose={closeActiveModal}
                 onRegister={handleRegister}
+                onSwitchToLogin={() => {
+                  closeActiveModal();
+                  setActiveModal("login");
+                }}
               />
 
               <LoginModal
                 isOpen={activeModal === "login"}
                 onClose={closeActiveModal}
                 onLogin={handleLogin}
+                onSwitchToRegister={() => {
+                  closeActiveModal();
+                  setActiveModal("register");
+                }}
               />
 
               <EditProfileModal

@@ -2,13 +2,13 @@ import ModalWithForm from "../ModalWithForm/ModalWithForm";
 import { useState } from "react";
 import "./LoginModal.css";
 
-function LoginModal({ isOpen, onClose, onLogin }) {
+function LoginModal({ isOpen, onClose, onLogin, onSwitchToRegister }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onLogin({ email, password });
+    onLogin({ email, password }); // submit stays the same
   };
 
   return (
@@ -18,7 +18,10 @@ function LoginModal({ isOpen, onClose, onLogin }) {
       onClose={onClose}
       onSubmit={handleSubmit}
       buttonText="Log In"
+      switchText="or Sign Up" // put the switch in the actions row
+      onSwitch={onSwitchToRegister} // handler comes from App
     >
+      {/* inputs only; no switch button here */}
       <label className="modal__label">
         Email
         <input

@@ -1,39 +1,40 @@
 import "./ItemCard.css";
-import { useState } from "react";
+import { useContext } from "react";
+import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 
-function ItemCard({ item, onCardClick }) {
-  // local like state (just for front-end toggling)
-  const [isLiked, setIsLiked] = useState(false);
+function ItemCard({ item, onCardClick, isLoggedIn, onCardLike }) {
+  const currentUser = useContext(CurrentUserContext);
+
+  const isLiked = item.likes.some((id) => id === currentUser?._id);
 
   const handleLikeClick = () => {
-    setIsLiked(!isLiked); // toggle state
+    onCardLike(item);
   };
 
   return (
     <li className="card">
-      {/* Item name */}
       <p className="card__name">{item.name}</p>
 
-      {/* Item image */}
       <img
-        src={item.link} // ✅ use link, not imageUrl
+        src={item.link}
         alt={item.name}
         className="card__image"
         onClick={() => onCardClick(item)}
       />
 
-      {/* Like button */}
-      <button
-        className="card__like-button"
-        onClick={handleLikeClick}
-        aria-label="like"
-      >
-        <img
-          src={isLiked ? "/heart-filled.svg" : "/heart.svg"}
-          alt={isLiked ? "liked" : "not liked"}
-          className="card__like-icon"
-        />
-      </button>
+      {isLoggedIn && (
+        <button
+          className="card__like-button"
+          onClick={handleLikeClick}
+          aria-label="like"
+        >
+          <img
+            src={isLiked ? "/heart-filled.svg" : "/heart.svg"}
+            alt={isLiked ? "liked" : "not liked"}
+            className="card__like-icon"
+          />
+        </button>
+      )}
     </li>
   );
 }

@@ -156,3 +156,24 @@
   background-color: rgba(0, 0, 0, 0.3);
   cursor: not-allowed;
 }
+
+.modal__actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.modal__switch-btn {
+  background: none;
+  border: none;
+  font-family: "Cabinet Grotesk", sans-serif;
+  font-size: 16px;
+  line-height: 20px;
+  cursor: pointer;
+  color: #000000;
+}
+
+.modal__switch-btn:hover {
+  opacity: 0.6;
+}

@@ -2,7 +2,7 @@ import ModalWithForm from "../ModalWithForm/ModalWithForm";
 import { useState } from "react";
 import "./RegisterModal.css";
 
-function RegisterModal({ isOpen, onClose, onRegister }) {
+function RegisterModal({ isOpen, onClose, onRegister, onSwitchToLogin }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
@@ -10,7 +10,7 @@ function RegisterModal({ isOpen, onClose, onRegister }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onRegister({ name, avatar, email, password });
+    onRegister({ name, avatar, email, password }); // submit stays the same
   };
 
   return (
@@ -19,8 +19,11 @@ function RegisterModal({ isOpen, onClose, onRegister }) {
       isOpen={isOpen}
       onClose={onClose}
       onSubmit={handleSubmit}
-      buttonText="Register"
+      buttonText="Sign Up"
+      switchText="or Log In" // put the switch in the actions row
+      onSwitch={onSwitchToLogin} // handler comes from App
     >
+      {/* inputs only; no switch button here */}
       <label className="modal__label">
         Name
         <input
