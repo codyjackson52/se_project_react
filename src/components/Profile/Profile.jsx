@@ -8,6 +8,8 @@ function Profile({
   onAddClick,
   onEditProfile,
   onSignOut,
+  onCardLike, // ✅ pass through
+  isLoggedIn, // ✅ pass through
 }) {
   return (
     <div className="profile">
@@ -19,9 +21,12 @@ function Profile({
             + Add new
           </button>
         </div>
+
         <ClothesSection
           clothingItems={clothingItems}
           onCardClick={onCardClick}
+          onCardLike={onCardLike} // ✅ like support
+          isLoggedIn={isLoggedIn} // ✅ like visibility
         />
       </div>
     </div>

@@ -12,6 +12,7 @@ import DeleteConfirmation from "../DeleteConfirmation/DeleteConfirmation";
 import RegisterModal from "../RegisterModal/RegisterModal";
 import LoginModal from "../LoginModal/LoginModal";
 import EditProfileModal from "../EditProfileModal/EditProfileModal";
+import ProtectedRoute from "../ProtectedRoute/ProtectedRoute"; // ✅ protect /profile
 
 import { getWeatherData } from "../../utils/weatherApi";
 import {
@@ -45,15 +46,18 @@ function App() {
     setCurrentTemperatureUnit((prev) => (prev === "F" ? "C" : "F"));
   };
 
+  // Weather
   useEffect(() => {
     getWeatherData()
       .then((data) => setWeatherData(data))
       .catch((err) => console.error("Weather fetch failed:", err));
   }, []);
 
+  // Items
   useEffect(() => {
     getClothingItems()
       .then((items) => {
+        // Normalize to ensure each card has a stable `link` for <img src>
         const normalized = items.map((item) => ({
           ...item,
           link: item.imageUrl,
@@ -63,17 +67,15 @@ function App() {
       .catch((err) => console.error("Fetch failed", err));
   }, []);
 
+  // ESC to close modals
   useEffect(() => {
     if (!activeModal) return;
-    const handleEscClose = (e) => {
-      if (e.key === "Escape") {
-        closeActiveModal();
-      }
-    };
+    const handleEscClose = (e) => e.key === "Escape" && closeActiveModal();
     document.addEventListener("keydown", handleEscClose);
     return () => document.removeEventListener("keydown", handleEscClose);
   }, [activeModal]);
 
+  // Token check
   useEffect(() => {
     const token = localStorage.getItem("jwt");
     if (token) {
@@ -87,13 +89,12 @@ function App() {
     }
   }, []);
 
+  // Auth
   const handleRegister = ({ name, avatar, email, password }) => {
     return auth
       .signup({ name, avatar, email, password })
       .then(() => handleLogin({ email, password }))
-      .then(() => {
-        closeActiveModal();
-      })
+      .then(() => closeActiveModal())
       .catch((err) => console.error("Register failed:", err));
   };
 
@@ -130,6 +131,7 @@ function App() {
       .catch((err) => console.error("Profile update failed:", err));
   };
 
+  // Modal helpers
   const handleAddClick = () => setActiveModal("add-garment");
   const handleEditProfileClick = () => setActiveModal("edit-profile");
   const handleLoginClick = () => setActiveModal("login");
@@ -142,6 +144,7 @@ function App() {
     setNewGarmentWeather("");
   };
 
+  // Card interactions
   const handleCardClick = (card) => {
     setSelectedCard(card);
     setActiveModal("preview");
@@ -184,15 +187,19 @@ function App() {
   const handleCardLike = (card) => {
     const token = localStorage.getItem("jwt");
     const isLiked = card.likes.some((id) => id === currentUser?._id);
+
     const request = isLiked
       ? removeCardLike(card._id, token)
       : addCardLike(card._id, token);
 
     request
       .then((updatedCard) => {
+        // ✅ Preserve `link` so the image doesn’t disappear after like toggle
         setClothingItems((items) =>
           items.map((item) =>
-            item._id === updatedCard._id ? updatedCard : item
+            item._id === updatedCard._id
+              ? { ...updatedCard, link: updatedCard.imageUrl }
+              : item
           )
         );
       })
@@ -229,25 +236,31 @@ function App() {
                     </>
                   }
                 />
+
+                {/* ✅ Protect profile + pass like + pass isLoggedIn */}
                 <Route
                   path="/profile"
                   element={
-                    <>
-                      <Header
-                        handleAddClick={handleAddClick}
-                        weatherData={weatherData}
-                        isLoggedIn={isLoggedIn}
-                        onLogin={handleLoginClick}
-                        onRegister={handleRegisterClick}
-                      />
-                      <Profile
-                        clothingItems={clothingItems}
-                        onCardClick={handleCardClick}
-                        onAddClick={handleAddClick}
-                        onEditProfile={handleEditProfileClick}
-                        onSignOut={handleSignOut}
-                      />
-                    </>
+                    <ProtectedRoute isLoggedIn={isLoggedIn}>
+                      <>
+                        <Header
+                          handleAddClick={handleAddClick}
+                          weatherData={weatherData}
+                          isLoggedIn={isLoggedIn}
+                          onLogin={handleLoginClick}
+                          onRegister={handleRegisterClick}
+                        />
+                        <Profile
+                          clothingItems={clothingItems}
+                          onCardClick={handleCardClick}
+                          onAddClick={handleAddClick}
+                          onEditProfile={handleEditProfileClick}
+                          onSignOut={handleSignOut}
+                          onCardLike={handleCardLike}
+                          isLoggedIn={isLoggedIn}
+                        />
+                      </>
+                    </ProtectedRoute>
                   }
                 />
               </Routes>

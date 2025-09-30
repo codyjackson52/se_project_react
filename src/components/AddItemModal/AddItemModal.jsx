@@ -17,7 +17,7 @@ function AddItemModal({
       title="New Garment"
       buttonText="Add Garment"
       isOpen={isOpen}
-      handleCloseClick={onClose}
+      onClose={onClose} // ✅ keep prop name consistent with ModalWithForm
       onSubmit={onAddItem}
     >
       <label htmlFor="name" className="modal__label">
